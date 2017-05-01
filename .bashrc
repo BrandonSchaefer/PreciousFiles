@@ -66,6 +66,8 @@ xterm*|rxvt*)
     ;;
 esac
 
+#export TERM=linux
+
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
@@ -120,18 +122,55 @@ alias clang-compile='cmake .. -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clan
 
 alias start-vpn='sudo openvpn --config /etc/openvpn/qalab-vpn.config'
 
+alias cm='cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX'
+
+alias mi='make -j9 install'
+
+alias largest_files="find . -printf '%s %p\n'| sort -nr | head -10"
+
+alias bd="bzr diff --using=meld"
+
+alias tag="~/tag.sh"
+
+alias ..="cd .."
+
+alias rmb="cd ..; rm -rf build; mkdir build; cd build"
+
+m()
+{
+    g++ --std=c++1z -g3 "$@".cpp -o "$@" -pthread
+}
+
+f()
+{
+  find . -name "*$@*"
+}
+
+#g(){
+  #grep -Hnri --color=always "$@"
+#}
+
 g(){
-  grep -Hnri --color=always "$@"
+  if rg --version > /dev/null; then
+      rg -j1 -i "$@"
+  else
+      grep -Hnri --color=always "$@"
+  fi
+}
+
+
+f_files()
+{
+    grep -Hnirl --exclude='*.sw*' "$@" * 
+}
+
+vim_files()
+{
+    vi `grep -Hnirl --exclude='*.sw*' "$@" *`
 }
 
 export COMPIZ_CONFIG_PROFILE=ubuntu
 export PREFIX=$HOME/staging
-export DEBEMAIL="Brandon Schaefer <brandon.schaefer@canonical.com>"
+export DEBEMAIL="Brandon Schaefer <brandontschaefer@gmail.com>"
 export DEBFULLNAME="Brandon Schaefer"
-
-# For Go
-export GOROOT=$HOME/go
-export GOARCH=386
-export GOOS=linux
-export GOBIN=$HOME/bin
-export PATH=$GOBIN:$PATH
+export PATH="/home/bschaefer/.cargo/bin:$PATH"
